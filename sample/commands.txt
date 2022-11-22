@@ -1,0 +1,17 @@
+
+// train a model
+python -m train.train_mdm --save_dir save/my_humanml_trans_enc_512 --dataset humanml --eval_during_training --diffusion_steps 50 --device 1
+
+// limit visible gpus
+CUDA_VISIBLE_DEVICES=1
+
+// motion inpainting
+python -m sample.edit --model_path ./save/humanml_trans_enc_512/model000475000.pt --edit_mode in_between  --num_samples 1 --num_repetitions 1 --seed 5 --device 1
+python -m sample.edit --model_path ./save/my_humanml_trans_enc_512/model000200000.pt --edit_mode in_between  --num_samples 1 --num_repetitions 1 --seed 5 --device 1
+
+// compare text encodings
+python -m sample.collect --model_path ./save/humanml_trans_enc_512/model000200000.pt --device 1
+
+// sample and visualize from the dataset
+python -m sample.sample_data --model_path ./save/humanml_trans_enc_512/model000200000.pt --device 1
+
